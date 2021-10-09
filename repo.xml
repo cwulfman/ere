@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<meta 
+  xmlns="http://exist-db.org/xquery/repo">
+  <description>election report browser</description>
+  <author>cwulfman</author>
+  <website>http://cwulfman.org</website>
+  <status>SNAPSHOT</status>
+  <license>AGPL-3.0</license>
+  <copyright>true</copyright>
+  <type>application</type>
+  <target>ere</target>
+  <prepare>pre-install.xql</prepare>
+  <finish>post-install.xql</finish>
+</meta>

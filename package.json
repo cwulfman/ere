@@ -1,0 +1,41 @@
+{
+  "name": "ere",
+  "version": "1.0.0",
+  "description": "election report browser",
+  "homepage": "https://github.com/cwulfman/ere#readme",
+  "bugs": "https://github.com/cwulfman/ere/issues",
+  "keywords": [
+    "exist",
+    "exist-db",
+    "xml",
+    "xql",
+    "xquery"
+  ],
+  "author": {
+    "name": "cwulfman",
+    "email": "cliff@osetinstitute.org"
+  },
+  "license": "AGPL-3.0",
+  "scripts": {
+    "test": "mocha test/mocha/ --recursive --exit && mocha test/xqs/*.js",
+    "cypress": "cypress run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cwulfman/ere",
+    "license": "AGPL-3.0"
+  },
+  "devDependencies": {
+    "chai": "4.3.4",
+    "chai-xml": "0.4.0",
+    "cypress": "8.5.0",
+    "fs-extra": "10.0.0",
+    "mocha": "9.1.2",
+    "supertest": "6.1.6",
+    "xmldoc": "1.1.2",
+    "yeoman-assert": "3.1.1"
+  },
+  "dependencies": {
+    "bootstrap": "5.1.2"
+  }
+}
