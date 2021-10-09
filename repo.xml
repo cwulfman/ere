@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<meta 
-  xmlns="http://exist-db.org/xquery/repo">
+<meta xmlns="http://exist-db.org/xquery/repo">
+  <title>Election Report Browser</title>
   <description>election report browser</description>
   <author>cwulfman</author>
   <website>http://cwulfman.org</website>

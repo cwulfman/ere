@@ -13,6 +13,8 @@ import module namespace templates="http://exist-db.org/xquery/html-templating";
 import module namespace lib="http://exist-db.org/xquery/html-templating/lib";
 import module namespace config="http://trustthevote.org/apps/ere/config" at "config.xqm";
 
+declare namespace er="NIST_V1_election_results.xsd";
+declare namespace xsi="http://www.w3.org/2001/XMLSchema-instance";
 
 (:~
  : This is a sample templating function. It will be called by the templating module if
@@ -35,4 +37,47 @@ declare function app:test($node as node(), $model as map(*)) {
         function was triggered by the class attribute <code>class="app:test"</code>.</p>
 };
 
+declare function app:stats($node as node(), $model as map(*)) {
+    <table class="table table-bordered">
+        <caption>Collection Stats</caption>
+        <tr>
+            <td>number of elections:</td>
+            <td>{count(app:ElectionScopeIds($node, $model))}</td>
+        </tr>
+        <tr>
+            <td>number of reporting units:</td>
+            <td>
+                <dl class="row"> {
+            let $id-map := app:ReportingUnitIds($node, $model)
+            return map:for-each($id-map, function($k, $v) { <dt class="col-sm-9">{$k}</dt>,<dd class="col-sm-3">{count($v)}</dd> } )
+            }</dl>
+            </td>
+        </tr>
+    </table>
+};
 
+
+declare function app:ElectionScopeIds($node as node(), $model as map(*)) as element()* {
+    collection($config:data-root)//er:ElectionScopeId
+};
+
+declare function app:ReportingUnitIds($node as node(), $model as map(*)) {
+    let $reporting-units := collection($config:data-root)//er:GpUnit[@xsi:type="ReportingUnit"]
+    return
+        map:merge(
+            for $type in distinct-values($reporting-units/er:Type)
+            return map:entry(string($type), $reporting-units[./er:Type=$type]))
+};
+
+declare function app:cities($node as node(), $model as map(*)) {
+    let $city-reporting-units := collection($config:data-root)//er:GpUnit[@xsi:type="ReportingUnit" and er:Type="city"]
+    return map { 'cities' : $city-reporting-units }
+};
+
+declare 
+    %templates:wrap
+function app:city-list($node as node(), $model as map(*)) {
+    for $unit in $model('cities')
+    return
+    <li>{ $unit/er:Name/text() }</li>
+};
