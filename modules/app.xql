@@ -81,3 +81,44 @@ function app:city-list($node as node(), $model as map(*)) {
     return
     <li>{ $unit/er:Name/text() }</li>
 };
+
+declare function app:gpunit($node as node(), $model as map(*), $id as xs:string) {
+    let $unit := collection($config:data-root)//er:GpUnit[@objectId = $id]
+    return map { 'current-gpunit' : $unit }
+};
+
+declare function app:gpunit-title($node as node(), $model as map(*)) {
+    <header>
+        <h2>{ $model('current-gpunit')/er:Name/text() }</h2>
+    </header>
+};
+
+declare function app:gpunit-info($node as node(), $model as map(*)) {
+    let $unit := $model('current-gpunit')
+    let $type := $unit/er:Type/text()
+    return $type
+};
+
+
+declare 
+    %templates:wrap
+function app:gpunit-contests($node as node(), $model as map(*)) {
+    let $unit := $model('current-gpunit')
+    let $contests := $unit/ancestor::er:ElectionReport//er:Contest[er:ElectoralDistrictId = $unit/@objectId]
+    for $contest in $contests
+    return <li><a href="contests.html?id={$contest/@objectId}">{ $contest/er:Name/text() }</a></li>
+};
+
+declare 
+   %templates:wrap
+function app:gpunit-composing-units($node as node(), $model as map(*)) {
+    let $unit := $model('current-gpunit')
+    let $electionReport := $unit/ancestor::er:ElectionReport
+    let $precinctids := $unit/er:ComposingGpUnitIds
+    for $precinctid in tokenize($precinctids)
+        let $precinct := $electionReport//er:GpUnit[@objectId=xs:string($precinctid)]
+        return <tr>
+        <td>{ $precinct/er:Name/text() }</td>
+        <td>{ $precinct/er:Type/text() }</td>
+        </tr>
+};
